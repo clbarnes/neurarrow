@@ -6,3 +6,4 @@ Initial implementation.
 
 - Skeletons
 - Dotprops
+- Connectors
