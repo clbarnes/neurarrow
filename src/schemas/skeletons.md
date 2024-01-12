@@ -83,7 +83,8 @@ Arbitrary text labels to apply to a sample.
 
 Any connectors associated with the node.
 The key of the map is the type of relationship;
-the value is a list of related connector IDs.
+the value is a list of related connector IDs,
+which MAY be found in a table with the [connectors](./connectors.md) schema.
 
 Valid relationships are:
 
