@@ -1,0 +1,6 @@
+[book]
+authors = ["Chris Barnes"]
+language = "en"
+multilingual = false
+src = "src"
+title = "neurarrow"
