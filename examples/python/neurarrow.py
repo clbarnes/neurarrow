@@ -7,7 +7,33 @@ ID = pa.uint64()
 REAL = pa.float64()
 
 SPACE_UNITS: set[str] = {
-  "angstrom", "attometer", "centimeter", "decimeter", "exameter", "femtometer", "foot", "gigameter", "hectometer", "inch", "kilometer", "megameter", "meter", "micrometer", "mile", "millimeter", "nanometer", "parsec", "petameter", "picometer", "terameter", "yard", "yoctometer", "yottameter", "zeptometer", "zettameter"
+    "angstrom",
+    "attometer",
+    "centimeter",
+    "decimeter",
+    "dekameter",
+    "exameter",
+    "femtometer",
+    "foot",
+    "gigameter",
+    "hectometer",
+    "inch",
+    "kilometer",
+    "megameter",
+    "meter",
+    "micrometer",
+    "mile",
+    "millimeter",
+    "nanometer",
+    "parsec",
+    "petameter",
+    "picometer",
+    "terameter",
+    "yard",
+    "yoctometer",
+    "yottameter",
+    "zeptometer",
+    "zettameter",
 }
 
 Fields = list[pa.field]
