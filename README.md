@@ -10,7 +10,6 @@ and models compatible with it (e.g. [Apache Parquet](https://parquet.apache.org/
 This repository uses [mdBook](https://rust-lang.github.io/mdBook/) to produce a web page for the schema.
 Install it and run `mdbook serve`.
 
-## Versions
+## Contribution
 
-- Development branch
-- v[0.1.0]
+Pull requests should use [`dev` branch](https://github.com/clbarnes/neurarrow/tree/dev) as a head.
