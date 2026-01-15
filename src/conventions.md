@@ -10,8 +10,8 @@ Names MUST use UTF-8 encodings.
 
 We use arrow's nomenclature for primitives.
 
-Real values SHOULD be stored as a float64 field, or as a base-10 decimal ASCII string (e.g. `3.14`) in an attribute.
-Integer IDs SHOULD be stored as uint64 field, or as a base-10 ASCII string (e.g. `123`) in an attribute.
+Real values SHOULD be stored as a float64 field, or as a base-10 decimal ASCII string (e.g. `3.14`) in a metadata value.
+Integer IDs SHOULD be stored as uint64 field, or as a base-10 ASCII string (e.g. `123`) in a metadata value.
 
 ## Additional data
 
