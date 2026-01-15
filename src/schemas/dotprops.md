@@ -9,7 +9,7 @@ Dotprops are point clouds used in [NBLAST](http://flybrain.mrc-lmb.cam.ac.uk/si/
 These metadata MUST exist at the schema level.
 
 - `version`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
-- `unit`: : as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
+- `unit`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
 - `context`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
 - `neighborhood_size`: how many nearest neighbors were used to calculate the tangent vector (referred to as `k` in literature),
   as a base-10 representation of an unsigned integer.

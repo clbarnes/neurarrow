@@ -10,7 +10,7 @@ The root SHOULD be the cell body.
 These metadata MUST exist at the schema level.
 
 - `version`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
-- `unit`: : as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
+- `unit`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
 - `context`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
 
 ### Optional schema metadata
