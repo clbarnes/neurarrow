@@ -20,21 +20,43 @@ and data structured according to some well-described extension.
 
 ### Attributes
 
-Unstructured attributes are generally prefixed by `attr:`.
-Nested attributes MAY be encoded with `:`-separated names,
+#### Arrow metadata
+
+Schema metadata and field metadata MAY contain unstructured arbitrary attributes,
+whose keys MUST be prefixed by `attr:`.
+Nested attributes MAY be encoded with `:`-separated elements
 (e.g. `attr:parent_container:child_field`),
 although storing a structure in a serialised form like JSON or MsgPack is also acceptable.
 
+#### Fields
+
+Arbitrary attribute fields MAY be added to any schema.
+The name of the field MUST be prefixed by `attr:`.
+
+Additionally, all schemas MAY have an `attr` field,
+which MUST be a nullable map from variable-length string keys to variable-length bytes values.
+The values are RECOMMENDED to be UTF-8 encoded strings.
+These keys SHOULD NOT have an `attr:` prefix.
+
 ### Extensions
 
-Extensions SHOULD have unique names,
+Extensions MUST have unique names,
 and SHOULD ensure this by incorporating the web domain of the controlling entity in reverse DNS format.
-For example, an extension for spatial transforms defined by the owner of `https://example.com`
-MAY be called `com.example.transforms`.
-All data (metadata or fields) structured according to this extension would have names prefixed by `com.example.transforms:`.
+All data (metadata or fields) structured according to this extension MUST have names prefixed by the extension name and a colon.
+
+Where an extension is in use for a particular schema,
+the version of the extension MUST be included in the schema metadata under a key which is the extension name, a colon, and the literal string `version`.
+The value MUST be a UTF-8 encoded string conforming to the [PEP-440](https://packaging.python.org/en/latest/specifications/version-specifiers/#version-specifiers) specification.
+
+> **Example**
+>
+> - The owner of `https://example.com` develops an extension to represent spatially transformed skeletons
+> - Their extension is referred to as `com.example.transform`
+> - The schema metadata of tables using this extension includes `com.example.transform:version` and `com.example.transform:uuid`
+> - The skeletons schema now includes `com.example.transforms:original_xyz`, a `struct{x:float64, y:float64, z:float64}` field
 
 Nested extension metadata SHOULD be encoded with `:`-separated names
-(e.g. `com.example.transforms:method:arguments`),
+(e.g. `com.example.transform:method:arguments`),
 although storing a structure in a serialised form like JSON or MsgPack is also acceptable.
 
 ## Neurarrow-specific metadata
@@ -104,13 +126,8 @@ Schemas have fields (a.k.a. columns) described in this specification:
   - derived fields MAY be invalidated if the fields they depend on are updated
 - _extension_ fields whose name MUST be prefixed by the extension's unique name as described in [Extensions](#extensions)
   - these fields MAY be specified by that extension as _required_, _optional_, or _derived_
-- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Extensions](#extensions)
-  - additionally, attributes MAY be defined for individual records (rows) using a field called `attr`,
-    which MUST be nullable
-    and MUST be of type `map`
-    whose keys MUST be variable-length UTF-8 strings (which do not need the `attrs:` prefix) and
-    whose values MUST be variable-length byte strings,
-    which SHOULD contain encoded UTF-8 strings
+- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Attributes](#fields)
+  - the `attr` field described in [Attributes](#fields) is also an _attribute_ field
 
 Fields have metadata, containing:
 
@@ -120,11 +137,9 @@ Fields have metadata, containing:
 Metadata keys MUST be UTF-8 encoded strings.
 Metadata values SHOULD be UTF-8 encoded strings.
 
-Field metadata MAY contain arbitrary attributes;
-their keys MUST be prefixed by `attr:` as described in the [Attributes section](#attributes).
+Field metadata MAY contain arbitrary attributes as described in the [Attributes section](#attributes).
 
-Field metadata MAY contain extension metadata;
-their keys MUST be prefixed by the unique name of the extension as described in the [Extensions section](#extensions).
+Field metadata MAY contain extension metadata as described in the [Extensions section](#extensions).
 
 ## Storage
 

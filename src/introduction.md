@@ -24,18 +24,14 @@ Otherwise,
 
 ## Prior art
 
-These software packages manage columnar neuroscience data:
+These software packages manage tabular neuroscience data:
 
 - [navis](https://navis.readthedocs.io/en/latest/)
-  - This specification was originally based on
+  - The neurarrow specification was originally based on navis' [parquet IO](https://github.com/navis-org/navis/blob/master/navis/io/pq_io.md)
 - [CATMAID](https://catmaid.org)
 - [natverse](https://natverse.org/)
 
-These file formats describe columnar neuroscience data:
+These file formats describe tabular neuroscience data:
 
 - [SWC](http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html)
   (and [SWCplus](https://neuroinformatics.nl/swcPlus/))
-
-<!-- ## Tools implementing neuroarrow
-
-## Datasets published in neurarrow -->

@@ -4,6 +4,10 @@
 
 [Conventions](./conventions.md)
 
+[Implementations](./implementations.md)
+
+[Extensions](./extensions.md)
+
 [Changelog](./CHANGELOG.md)
 
 # Schemas

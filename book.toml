@@ -4,3 +4,7 @@ description = "A specification for neuroscience data using the arrow data model"
 language = "en"
 src = "src"
 title = "neurarrow"
+
+[output.html]
+# default-theme = "navy"
+git-repository-url = "https://github.com/clbarnes/neurarrow"
