@@ -1,6 +1,4 @@
-# neurarrow
-
-> *Work In Progress*
+# Introduction
 
 Specifications for storing neuroscience data using the [Apache Arrow](https://arrow.apache.org/) data model,
 and models compatible with it (e.g. [Apache Parquet](https://parquet.apache.org/)).
@@ -21,6 +19,8 @@ Otherwise,
 - Major versions are used for changes which break compatibility, i.e.
   - A v1.x parser MAY not be able to read a v2.y file
   - A v2.x parser MAY not be able to read a v1.y file
+
+[Extensions](./extensions.md) MAY use other versioning schemes.
 
 ## Prior art
 

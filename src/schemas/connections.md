@@ -65,8 +65,11 @@ Acceptable values in this specification are
 - `synapse` (directed): a chemical synapse where the `src` sample is presynaptic and the `tgt` sample is postsynaptic
 - `gap_junction` (undirected): an electrical synapse
 
+Undirected connection types SHOULD NOT be repeated to represent both directions
+(i.e. if `1 =gap_junction=> 2` is defined, do not explicitly define `2 =gap_junction=> 1`).
+
 Extensions MAY add additional connection types,
-which MUST be prefixed by the extension name and a colon `com.example.my_extension:my_type`.
+which MUST be prefixed by the extension name and a colon, e.g. `com.example.my_extension:my_type`.
 
 ### Optional fields
 

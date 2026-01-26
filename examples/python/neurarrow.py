@@ -185,8 +185,6 @@ class Skeletons(ArrowWrapper):
     ]
     _opt_fields = [
         pa.field("radius", REAL, True),
-        pa.field("labels", pa.list_(pa.string()), False),
-        pa.field("connectors", pa.map_(pa.dictionary(ID, pa.string()), pa.list(ID)))
     ]
     _der_fields = [
         pa.field("child_ids", pa.list_(ID), False),
@@ -196,6 +194,7 @@ class Skeletons(ArrowWrapper):
 
     _req_meta = {
         b"version": lambda _, b: check_version(b),
+        b"context": None,
         b"unit": lambda _, b: check_unit(b, SPACE_UNITS),
     }
     _opt_meta = {
@@ -222,6 +221,7 @@ class Dotprops(ArrowWrapper):
 
     _req_meta = {
         b"version": lambda _, b: check_version(b),
+        b"context": None,
         b"unit": lambda _, b: check_unit(b, SPACE_UNITS),
         b"neighborhood_size": lambda _, b: check_dtype(b, int),
     }
@@ -231,23 +231,21 @@ class Dotprops(ArrowWrapper):
     }
 
 
-class Connectors(ArrowWrapper):
+class Connections(ArrowWrapper):
     _req_fields = [
-        pa.field("connector_id", ID, False),
-        pa.field("x", REAL, False),
-        pa.field("y", REAL, False),
-        pa.field("z", REAL, False),
-        pa.field("type", pa.dictionary(ID, pa.string()), False)
+        pa.field("connection_id", ID, False),
+        pa.field("src_sample_id", ID, False),
+        pa.field("tgt_sample_id", ID, False),
+        pa.field("type", pa.dictionary(pa.uint16(), pa.utf8()), False),
     ]
     _opt_fields = []
     _der_fields = []
 
     _req_meta = {
         b"version": lambda _, b: check_version(b),
-        b"unit": lambda _, b: check_unit(b, SPACE_UNITS),
+        b"context": None,
     }
     _opt_meta = {
-        b"space": None,
         b"attr": None,
     }
 

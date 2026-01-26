@@ -12,6 +12,6 @@
 
 # Schemas
 
-- [Skeletons](./schemas/skeletons.md)
+- [Skeletonised cells](./schemas/skeletons.md)
 - [Connections](./schemas/connections.md)
 - [Dotprops](./schemas/dotprops.md)

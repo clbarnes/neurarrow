@@ -13,14 +13,13 @@ We use arrow's nomenclature for primitives.
 Real values SHOULD be stored as a float64 field, or as a base-10 decimal ASCII string (e.g. `3.14`) in a metadata value.
 Integer IDs SHOULD be stored as uint64 field, or as a base-10 ASCII string (e.g. `123`) in a metadata value.
 
-## Additional data
+## Attributes
 
-Neuroarrow is designed with the flexibility to accommodate both unstructured attributes
-and data structured according to some well-described extension.
+Here, attributes are defined as arbitrary unstructured data and metadata.
 
-### Attributes
+Consider defining an [extension](./extensions.md) to make your additional data discoverable and re-usable.
 
-#### Arrow metadata
+### Attribute arrow metadata
 
 Schema metadata and field metadata MAY contain unstructured arbitrary attributes,
 whose keys MUST be prefixed by `attr:`.
@@ -28,7 +27,7 @@ Nested attributes MAY be encoded with `:`-separated elements
 (e.g. `attr:parent_container:child_field`),
 although storing a structure in a serialised form like JSON or MsgPack is also acceptable.
 
-#### Fields
+### Attribute fields
 
 Arbitrary attribute fields MAY be added to any schema.
 The name of the field MUST be prefixed by `attr:`.
@@ -37,27 +36,6 @@ Additionally, all schemas MAY have an `attr` field,
 which MUST be a nullable map from variable-length string keys to variable-length bytes values.
 The values are RECOMMENDED to be UTF-8 encoded strings.
 These keys SHOULD NOT have an `attr:` prefix.
-
-### Extensions
-
-Extensions MUST have unique names,
-and SHOULD ensure this by incorporating the web domain of the controlling entity in reverse DNS format.
-All data (metadata or fields) structured according to this extension MUST have names prefixed by the extension name and a colon.
-
-Where an extension is in use for a particular schema,
-the version of the extension MUST be included in the schema metadata under a key which is the extension name, a colon, and the literal string `version`.
-The value MUST be a UTF-8 encoded string conforming to the [PEP-440](https://packaging.python.org/en/latest/specifications/version-specifiers/#version-specifiers) specification.
-
-> **Example**
->
-> - The owner of `https://example.com` develops an extension to represent spatially transformed skeletons
-> - Their extension is referred to as `com.example.transform`
-> - The schema metadata of tables using this extension includes `com.example.transform:version` and `com.example.transform:uuid`
-> - The skeletons schema now includes `com.example.transforms:original_xyz`, a `struct{x:float64, y:float64, z:float64}` field
-
-Nested extension metadata SHOULD be encoded with `:`-separated names
-(e.g. `com.example.transform:method:arguments`),
-although storing a structure in a serialised form like JSON or MsgPack is also acceptable.
 
 ## Neurarrow-specific metadata
 
@@ -81,24 +59,18 @@ A single logical dataset may span multiple on-disk tables,
 either due to partitioning of a single logical table,
 or where tables of multiple types refer to each other.
 Different datasets may repeat IDs (e.g. for low integers).
-The `context` is an arbitrary UTF-8 string (e.g. IRI or hexadecimal UUID) identifying a shared context in which all IDs must be unique;
-it is the `context, ID` pair which is _globally_ unique.
+The `context` is an arbitrary UTF-8 string identifying a shared context in which all IDs MUST be unique;
+strictly it is the `(context, ID)` pair which is _globally_ unique.
+
+It is RECOMMENDED that the `context` be an IRI or UUID to ensure uniqueness.
 
 ### `space`
 
-An arbitrary UTF-8 string (e.g. IRI or hexadecimal UUID) identifying the space from which spatial data are taken (e.g. animals, transforms).
-Data sets from different spaces SHOULD NOT be compared directly,
-but datasets from different contexts which exist in the same space MAY be compared.
+An arbitrary UTF-8 string identifying the space from which spatial data are taken (e.g. animals, transforms).
+Data sets from different spaces SHOULD NOT be spatially overlaid without transformation,
+but datasets from different contexts which exist in the same space MAY be compared directly.
 
-### Arbitrary attributes
-
-Arbitrary attributes MAY be stored under keys prefixed by `attr:`,
-as described in the [Attributes section](#attributes).
-
-### Extension metadata
-
-Metadata controlled by extensions MUST be prefixed by their unique name,
-as described in the [Extensions section](#extensions).
+It is RECOMMENDED that the `space` be an IRI or UUID to ensure uniqueness.
 
 ## Schemas
 
@@ -106,6 +78,8 @@ Schemas have metadata, containing:
 
 - _required_ keys which MUST exist
 - _optional_ keys which MAY exist
+- _attribute_ keys
+- _extension_ keys
 
 Metadata keys MUST be UTF-8 encoded strings.
 Metadata values SHOULD be UTF-8 encoded strings.
@@ -114,9 +88,9 @@ Schema metadata MAY contain arbitrary attributes;
 their keys MUST be prefixed by `attr:` as described in the [Attributes section](#attributes).
 
 Schema metadata MAY contain extension metadata;
-their keys MUST be prefixed by the unique name of the extension as described in the [Extensions section](#extensions).
+their keys MUST be prefixed by the unique name of the extension as described in [Extensions](./extensions.md#extension-metadata).
 
-### Fields
+### Schema fields
 
 Schemas have fields (a.k.a. columns) described in this specification:
 
@@ -124,10 +98,9 @@ Schemas have fields (a.k.a. columns) described in this specification:
 - _optional_ fields which MAY exist
 - _derived_ fields which MAY exist, but MUST be calculable from other fields in the same context
   - derived fields MAY be invalidated if the fields they depend on are updated
-- _extension_ fields whose name MUST be prefixed by the extension's unique name as described in [Extensions](#extensions)
-  - these fields MAY be specified by that extension as _required_, _optional_, or _derived_
-- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Attributes](#fields)
-  - the `attr` field described in [Attributes](#fields) is also an _attribute_ field
+- _extension_ fields whose name MUST be prefixed by the extension's unique name as described in [Extensions](./extensions.md#extension-fields)
+- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Attributes](#attribute-fields)
+  - the `attr` field described in [Attributes](#attribute-fields) is also an _attribute_ field
 
 Fields have metadata, containing:
 
@@ -139,7 +112,7 @@ Metadata values SHOULD be UTF-8 encoded strings.
 
 Field metadata MAY contain arbitrary attributes as described in the [Attributes section](#attributes).
 
-Field metadata MAY contain extension metadata as described in the [Extensions section](#extensions).
+Field metadata MAY contain extension metadata as described in the [Extensions section](./extensions.md#extension-metadata).
 
 ## Storage
 
@@ -158,4 +131,4 @@ Individual tables SHOULD be stored as:
   - Paths like `.../fragment_id=123/*.skeleton.parquet`
   - Note that modifying schema and field metadata on hive-partitioned data can mean updating a lot of files
 
-The extension SHOULD be prefixed with the name of the file schema, like `brain.skeletons.parquet` or `cns.connectors.feather`.
+The extension SHOULD be prefixed with the name of the file schema, like `brain.skeletons.parquet` or `cns.connections.feather`.

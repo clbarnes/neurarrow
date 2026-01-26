@@ -6,5 +6,6 @@ src = "src"
 title = "neurarrow"
 
 [output.html]
-# default-theme = "navy"
 git-repository-url = "https://github.com/clbarnes/neurarrow"
+
+# [preprocessor.lint]
