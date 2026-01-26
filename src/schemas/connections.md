@@ -56,7 +56,7 @@ If the edge is undirected, the samples are interchangeable.
 
 ### `type`
 
-- data type: dict of string
+- data type: dictionary with index type uint16 and value type variable-length string
 - nullable: no
 
 The type of this connection.

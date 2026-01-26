@@ -1,6 +1,13 @@
+# /// script
+# requires-python = ">=3.13"
+# dependencies = [
+#     "pyarrow",
+# ]
+# ///
+from __future__ import annotations
 import pyarrow as pa
 
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional
 
 
 ID = pa.uint64()
@@ -38,42 +45,12 @@ SPACE_UNITS: set[str] = {
 
 Fields = list[pa.field]
 
-NestedMetaValue = Union[bytes, dict[bytes, 'NestedMetaValue']]
-NestedMeta = dict[bytes, NestedMetaValue]
-FlatMeta = dict[bytes, bytes]
-MetaValidator = Callable[[bytes, NestedMetaValue], None]
+MetaValue = bytes
+MetaValidator = Callable[[bytes, MetaValue], None]
 
 
 class ValidationError(Exception):
     pass
-
-
-def nest_metadata(meta: FlatMeta) -> NestedMeta:
-    out: NestedMeta = dict()
-    for k, v in meta.items():
-        subkeys = k.split(b":")
-        subkeys.reverse()
-        d: NestedMeta = out
-        while len(subkeys) > 1:
-            d = d.setdefault(subkeys.pop(), dict())
-        d[subkeys.pop()] = v
-    return out
-
-
-def flatten_metadata(nested: NestedMeta, output=None, prefix=b"") -> dict[bytes, bytes]:
-    if output is None:
-        output = dict()
-
-    for k, v in nested.items():
-        k = prefix + k
-        if isinstance(v, str):
-            output[k] = v.encode("utf-8")
-        elif isinstance(v, bytes):
-            output[k] = v
-        else:
-            flatten_metadata(v, output, k + b":")
-
-    return output
 
 
 def check_unit(b: bytes, valid: set[str]):
@@ -86,7 +63,7 @@ def check_dtype(b: bytes, fn: Callable[[bytes], Any]):
     fn(b)
 
 
-def check_version(b: bytes, max_ver: Optional[tuple[int, int]]=None):
+def check_version(b: MetaValue, max_ver: Optional[tuple[int, int]] = None):
     maj_b, min_b = b.split(b".")
     major = int(maj_b)
     minor = int(min_b)
@@ -108,8 +85,19 @@ class ArrowWrapper:
             self._validate_meta(table.schema, strict)
         self.table: pa.Table = table
 
-    def _metadata(self):
-        return nest_metadata(self.table.schema.metadata)
+    @property
+    def metadata(self):
+        return self.table.schema.metadata
+
+    def prefixed_metadata(self, prefix: bytes | str):
+        if isinstance(prefix, str):
+            prefix = prefix.encode("utf-8")
+
+        yield from (
+            (k, v)
+            for k, v in self.table.schema.metadata.items()
+            if k.startswith(prefix)
+        )
 
     @classmethod
     def _validate_fields(cls, schema: pa.Schema, strict=False):
