@@ -89,8 +89,8 @@ These fields MAY exist in the file, but MUST be calculable from other data.
 The ID of the skeleton to which the source sample belongs.
 MUST be the fragment ID associated with the sample ID in the skeleton table of this context.
 
-Note that while sample IDs are stable,
-the fragment to which they belong may not be as the data evolves.
+Note that while sample IDs SHOULD be stable,
+the fragment to which they belong MAY not be if the data evolves.
 
 #### `tgt_fragment_id`
 
@@ -100,5 +100,5 @@ the fragment to which they belong may not be as the data evolves.
 The ID of the skeleton to which the target sample belongs.
 MUST be the fragment ID associated with the sample ID in the skeleton table of this context.
 
-Note that while sample IDs are stable,
-the fragment to which they belong may not be as the data evolves.
+Note that while sample IDs SHOULD be stable,
+the fragment to which they belong MAY not be if the data evolves.
