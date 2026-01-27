@@ -1,6 +1,6 @@
 # Connections
 
-Connections are relationships between skeleton nodes other than morphological continuity.
+Connections are relationships between point cloud samples other than morphological continuity.
 
 ## Schema metadata
 
@@ -8,16 +8,13 @@ Connections are relationships between skeleton nodes other than morphological co
 
 These metadata MUST exist at the schema level.
 
-- `version`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
-- `unit`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
-- `context`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
+- None
 
 ### Optional schema metadata
 
 These metadata MAY exist at the schema level.
 
-- `space`: as described in [Conventions](../conventions.md#neurarrow-specific-metadata)
-- Arbitrary attributes and extension metadata MAY be added as described in the [Attributes](../conventions.md#attributes) and [Extensions](../conventions.md#extensions) sections
+- None
 
 ## Fields
 
@@ -37,7 +34,7 @@ An ID for this connection, which MUST be unique within the context.
 - data type: uint64
 - nullable: no
 
-An ID for the skeleton sample at the start of this edge.
+An ID for the point cloud sample at the start of this edge.
 MUST exist as a `sample_id` in an accessible skeleton table.
 
 If the edge is directed, the logical direction of the connection is from `src` to `tgt`.
@@ -48,7 +45,7 @@ If the edge is undirected, the samples are interchangeable.
 - data type: uint64
 - nullable: no
 
-An ID for the skeleton sample end of this edge.
+An ID for the point cloud sample end of this edge.
 MUST exist as a `sample_id` in an accessible skeleton table.
 
 If the edge is directed, the logical direction of the connection is from `src` to `tgt`.
@@ -75,7 +72,7 @@ which MUST be prefixed by the extension name and a colon, e.g. `com.example.my_e
 
 These fields MAY exist in the file.
 
-Arbitrary attribute and extension fields MAY be added as described in the [Attributes](../conventions.md#attributes) and [Extensions](../conventions.md#extensions) sections.
+- None
 
 ### Derived fields
 

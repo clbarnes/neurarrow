@@ -12,6 +12,14 @@
 
 # Schemas
 
+Abstract
+
+- [Base](./schemas/base.md)
+- [Spatial](./schemas/spatial.md)
+
+Concrete
+
+- [Point clouds](./schemas/pointclouds.md)
 - [Skeletonised cells](./schemas/skeletons.md)
 - [Connections](./schemas/connections.md)
 - [Dotprops](./schemas/dotprops.md)

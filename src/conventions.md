@@ -39,38 +39,33 @@ These keys SHOULD NOT have an `attr:` prefix.
 
 ## Neurarrow-specific metadata
 
-The below are common metadata keys found throughout the specification.
-
-### `version`
-
-The version of the neurarrow specification used to write the data, as a UTF-8 encoded string.
-See the [Versioning section](./introduction.md#versioning).
-
-### `unit`
-
-A UTF-8 encoded string which is the full name of a unit according to UDUNITS-2, or empty for arbitrary units (e.g. voxels with unknown resolution).
-
-- spatial
-  - angstrom, attometer, centimeter, decimeter, dekameter, exameter, femtometer, foot, gigameter, hectometer, inch, kilometer, megameter, meter, micrometer, mile, millimeter, nanometer, parsec, petameter, picometer, terameter, yard, yoctometer, yottameter, zeptometer, zettameter
-
-### `context`
+### Contexts
 
 A single logical dataset may span multiple on-disk tables,
 either due to partitioning of a single logical table,
 or where tables of multiple types refer to each other.
 Different datasets may repeat IDs (e.g. for low integers).
-The `context` is an arbitrary UTF-8 string identifying a shared context in which all IDs MUST be unique;
+The context identifier is an arbitrary UTF-8 string identifying a shared context in which all IDs MUST be unique;
 strictly it is the `(context, ID)` pair which is _globally_ unique.
 
-It is RECOMMENDED that the `context` be an IRI or UUID to ensure uniqueness.
+It is RECOMMENDED that the identifier be an IRI or UUID to ensure uniqueness.
 
-### `space`
+### Spaces
 
-An arbitrary UTF-8 string identifying the space from which spatial data are taken (e.g. animals, transforms).
-Data sets from different spaces SHOULD NOT be spatially overlaid without transformation,
-but datasets from different contexts which exist in the same space MAY be compared directly.
+Samples taken from two spatial experiments MAY have the same coordinates,
+but these may not actually be in the same physical location.
+Spatial datasets are routinely transformed from one "space" to another for comparison.
+It is important to track which space a dataset belongs to,
+to know whether it can be compared to another.
 
-It is RECOMMENDED that the `space` be an IRI or UUID to ensure uniqueness.
+The space identifier is an arbitrary UTF-8 string identifying the space from which spatial data are taken (e.g. animals, transforms).
+Data sets from different spaces SHOULD NOT be spatially overlaid without transformation.
+
+It is RECOMMENDED that the identifier be an IRI or UUID to ensure uniqueness.
+
+Data from two [contexts](conventions.md#Contexts) MAY share the same space
+(e.g. after transforming one experiment's data to another's space).
+Data from one context MUST share a space.
 
 ## Schemas
 
@@ -99,8 +94,8 @@ Schemas have fields (a.k.a. columns) described in this specification:
 - _derived_ fields which MAY exist, but MUST be calculable from other fields in the same context
   - derived fields MAY be invalidated if the fields they depend on are updated
 - _extension_ fields whose name MUST be prefixed by the extension's unique name as described in [Extensions](./extensions.md#extension-fields)
-- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Attributes](#attribute-fields)
-  - the `attr` field described in [Attributes](#attribute-fields) is also an _attribute_ field
+- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Attributes](attribute-fields)
+  - the `attr` field described in [Attributes](attribute-fields) is also an _attribute_ field
 
 Fields have metadata, containing:
 
@@ -113,6 +108,20 @@ Metadata values SHOULD be UTF-8 encoded strings.
 Field metadata MAY contain arbitrary attributes as described in the [Attributes section](#attributes).
 
 Field metadata MAY contain extension metadata as described in the [Extensions section](./extensions.md#extension-metadata).
+
+## Inheritance
+
+Certain schemas ("child") _inherit_ from another ("parent") schema.
+This means that the child schema:
+
+- MUST have all the parent's _required_ fields and metadata
+- MAY have all the parent's _optional_ and _derived_ fields and metadata
+
+Child schemas MAY inherit from more than one parent schema.
+
+The [Base](./schemas/base.md) and [Spatial](./schemas/spatial.md) schemas are provided as _abstract_ schemas.
+They SHOULD NOT be written as files themselves,
+but define a parent schema other (_concrete_) schemas MAY inherit from.
 
 ## Storage
 

@@ -38,6 +38,20 @@ Extension authors SHOULD document all required, optional, and derived fields.
 - The schema metadata of tables using this extension includes `com.example.transform:version` and `com.example.transform:uuid`
 - The skeletons schema now includes `com.example.transform:original_xyz`, a `struct{x:float64, y:float64, z:float64}` field
 
+## Extension by inheritance
+
+> This section is not normative.
+
+Rather than extending an existing schema, new schemas MAY be created by which [inherit](./conventions.md#inheritance) from another.
+This is NOT RECOMMENDED, unless a new type of data is being represented.
+Data from extension A and extension B can both exist in the same table if they extend the same schema,
+but child schema X and child schema Y can only be composed by creating a third child schema Z which inherits from both.
+
+For example, meshes can be represented as a table of vertices and a table of polygons referencing those vertices.
+The vertex table can re-use the [point cloud](./schemas/pointclouds.md) schema,
+possibly with an extension encoding features like vertex normals.
+The polygon table could then create a new schema inheriting from [base](./schemas/base.md) because there is no similar schema already.
+
 ## Developing extensions
 
 > This section is non-normative.
