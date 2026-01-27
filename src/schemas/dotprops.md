@@ -32,7 +32,7 @@ These fields are defined in addition to those defined by any parent classes.
 
 These fields MUST exist in the file.
 
-### `tangent_x`, `tangent_y`, `tangent_z`
+#### `tangent_x`, `tangent_y`, `tangent_z`
 
 - data type: float64
 - nullable: no
@@ -43,7 +43,7 @@ The normalised tangent vector of the neighborhood around the point in 3D, in the
 
 These fields MAY exist in the file.
 
-### `colinearity`
+#### `colinearity`
 
 - data type: float64
 - nullable: no

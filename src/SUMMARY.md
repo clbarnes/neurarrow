@@ -12,12 +12,12 @@
 
 # Schemas
 
-Abstract
+## Abstract
 
 - [Base](./schemas/base.md)
 - [Spatial](./schemas/spatial.md)
 
-Concrete
+## Concrete
 
 - [Point clouds](./schemas/pointclouds.md)
 - [Skeletonised cells](./schemas/skeletons.md)
