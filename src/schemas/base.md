@@ -38,8 +38,7 @@ These keys MAY exist in the schema's metadata.
 Unstructured arbitrary attributes beneath the `attr:` prefix.
 Nested attributes MAY be stored in a flat representation with `:` separators,
 e.g. `attr:parent:child:key = value`.
-Values are RECOMMENDED to be UTF-8 encoded strings.
-However, storing a structure in a serialised form like JSON or MsgPack is also acceptable.
+However, storing a structure in a serialised form like JSON is also acceptable.
 
 ## Fields
 
@@ -57,12 +56,11 @@ These fields MAY exist in the file.
 
 #### `attr`
 
-- data type: map with variable-length string keys and variable-length byte values
+- data type: map with variable-length string keys and variable-length string values
 - nullable: yes
 
 Arbitrary attributes set on a per-row basis.
 Keys SHOULD NOT use the `attr:` prefix.
-Values are RECOMMENDED to be UTF-8 encoded strings.
 
 #### `attr:*`
 

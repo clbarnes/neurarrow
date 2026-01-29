@@ -12,13 +12,13 @@ and SHOULD ensure this by incorporating the web domain of the controlling entity
 
 Where an extension is in use for a particular schema,
 the version of the extension MUST be included in the schema metadata under a key which is the extension name, a colon, and the literal string `version`.
-The value MUST be a UTF-8 encoded string conforming to the [PEP-440](https://packaging.python.org/en/latest/specifications/version-specifiers/#version-specifiers) specification.
+The value MUST be a string conforming to the [PEP-440](https://packaging.python.org/en/latest/specifications/version-specifiers/#version-specifiers) specification.
 Extension authors MAY use whatever versioning scheme they prefer
 (e.g. [semantic](https://semver.org/), [effort](https://jacobtomlinson.dev/effver/), [calendar](https://calver.org/))
 and document it separately.
 
-Extensions MAY add schema or field metadata.
-These MUST have keys prefixed by the UTF-8 encoded extension name and a colon
+Extensions MAY add schema metadata.
+These MUST have keys prefixed by the extension name and a colon
 (`com.example.my_extension:my_key`).
 
 Extension authors SHOULD document all required and optional metadata keys and the format of their values.
