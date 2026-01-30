@@ -1,7 +1,6 @@
-# Point clouds
+# Spatial (abstract)
 
-Point clouds are generic points in 3D space.
-Multiple point clouds (fragments) can be stored in one table.
+This abstract schema defines metadata and fields available to all neurarrow types containing spatial data.
 
 ## Parent schemas
 
@@ -24,7 +23,7 @@ These metadata MUST exist in the schema's metadata.
 Empty for arbitrary units (e.g. voxels with unknown resolution),
 or the full name of a spatial unit according to UDUNITS-2 as below:
 
-> angstrom, attometer, centimeter, decimeter, dekameter, exameter, femtometer, foot, gigameter, hectometer, inch, kilometer, megameter, meter, micrometer, mile, millimeter, nanometer, parsec, petameter, picometer, terameter, yard, yoctometer, yottameter, zeptometer, zettameter
+> yoctometer, zeptometer, attometer, femtometer, picometer, nanometer, angstrom, micrometer, millimeter, centimeter, inch, decimeter, foot, yard, meter, dekameter, hectometer, kilometer, mile, megameter, gigameter, terameter, petameter, parsec, exameter, zettameter, yottameter
 
 ### Optional schema metadata
 

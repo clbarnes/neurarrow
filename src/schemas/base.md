@@ -1,7 +1,6 @@
-# Point clouds
+# Base (abstract)
 
-Point clouds are generic points in 3D space.
-Multiple point clouds (fragments) can be stored in one table.
+This abstract schema defines metadata and fields available to all neurarrow tables.
 
 ## Parent schemas
 
