@@ -117,12 +117,12 @@ but define a parent schema other (_concrete_) schemas MAY inherit from.
 
 Individual tables SHOULD be stored as:
 
-- [Feather](https://github.com/wesm/feather) v2
-  - Also known as Arrow IPC
+- [Arrow IPC File format](https://arrow.apache.org/docs/format/Columnar.html#format-ipc)
+  - Also known as [Feather format](https://arrow.apache.org/docs/python/feather.html)
   - Best for inter-process communication or memory mapped I/O applications
-  - Extension `.feather`
+  - Extension `.arrow`
 - [Parquet](https://parquet.apache.org/)
-  - Best for longer-term, more space-efficient storage
+  - Best for longer-term, more space-efficient storage if writer parameters are set correctly
   - Extension `.parquet`
 - [Hive partitioned](https://duckdb.org/docs/stable/data/partitioning/hive_partitioning) parquet
   - Parquet files split into chunks in directories based on a particular column's value
@@ -131,3 +131,9 @@ Individual tables SHOULD be stored as:
   - Note that modifying schema and field metadata on hive-partitioned data can mean updating a lot of files
 
 The extension SHOULD be prefixed with the name of the file schema, like `brain.skeletons.parquet` or `cns.connections.feather`.
+
+> **WARNING**
+>
+> Parquet does not directly support `uint64` data (used for IDs in neurarrow).
+> Large `uint64` values are usually mapped to the negative range of parquet's `int64` data type,
+> and then parsed back to `uint64` when read back into arrow.
