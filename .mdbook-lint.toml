@@ -1,0 +1,15 @@
+disabled-rules = [
+    # line length
+    "MD013",
+    # unsorted lists indented by 2 spaces
+    "MD007",
+    # invalid internal link
+    "MDBOOK002",
+    # not enough words in chapter
+    "CONTENT003",
+    # not enough words in subsection
+    "CONTENT005",
+]
+
+[MD007]
+indent = 2

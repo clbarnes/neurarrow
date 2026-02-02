@@ -1,6 +1,11 @@
 [book]
-authors = ["Chris Barnes"]
+authors = ["Chris Barnes <chrislloydbarnes@gmail.com>"]
+description = "A specification for neuroscience data using the arrow data model"
 language = "en"
-multilingual = false
 src = "src"
 title = "neurarrow"
+
+[output.html]
+git-repository-url = "https://github.com/clbarnes/neurarrow"
+
+# [preprocessor.lint]

@@ -1,78 +1,139 @@
 # Conventions
 
-Unless there is a very good reason not to, fields and metadata keys MUST use `snake_case` names.
-
-Names MUST use UTF-8 encodings.
+Unless there is a very good reason not to, fields and metadata keys SHOULD use `snake_case` names.
 
 ## Data types
 
 ### Primitives
 
 We use arrow's nomenclature for primitives.
+Note that strings MUST be in UTF-8 encoding.
 
-Real values SHOULD be stored as float64.
-Integer IDs SHOULD be stored as uint64.
+Real values SHOULD be stored as a float64 field, or as a decimal string (e.g. `3.14`) in a metadata value.
+Integer IDs SHOULD be stored as uint64 field, or as a decimal string (e.g. `123`) in a custom metadata value.
+
+## Attributes
+
+Here, attributes are defined as arbitrary unstructured data and metadata.
+
+Consider defining an [extension](./extensions.md) to make your additional data discoverable and re-usable.
+
+### Attribute arrow metadata
+
+Schema metadata and field metadata MAY contain unstructured arbitrary attributes,
+whose keys MUST be prefixed by `attr:`.
+Nested attributes MAY be encoded with `:`-separated elements
+(e.g. `attr:parent_container:child_field`),
+although storing a structure in a serialised form like JSON is also acceptable.
+
+### Attribute fields
+
+Arbitrary attribute fields MAY be added to any schema.
+The name of the field MUST be prefixed by `attr:`.
+
+Additionally, all schemas MAY have an `attr` field,
+which MUST be a nullable map from variable-length string keys to variable-length bytes values.
+These keys SHOULD NOT have an `attr:` prefix.
 
 ## Neurarrow-specific metadata
 
-### unit
+### Contexts
 
-A UTF-8 encoded string which is the full name of a unit according to UDUNITS-2, or empty for arbitrary units (e.g. voxels with unknown resolution).
+A single logical dataset may span multiple on-disk tables,
+either due to partitioning of a single logical table,
+or where tables of multiple types refer to each other.
+Different datasets may repeat IDs (e.g. for low integers).
+The context identifier is an arbitrary UTF-8 string identifying a shared context in which all IDs MUST be unique;
+strictly it is the `(context, ID)` pair which is _globally_ unique.
 
-- spatial
-  - angstrom, attometer, centimeter, decimeter, exameter, femtometer, foot, gigameter, hectometer, inch, kilometer, megameter, meter, micrometer, mile, millimeter, nanometer, parsec, petameter, picometer, terameter, yard, yoctometer, yottameter, zeptometer, zettameter
+It is RECOMMENDED that the identifier be an IRI or (hex-encoded) UUID to ensure uniqueness.
 
-### space
+### Spaces
 
-An arbitrary byte string (e.g. name or UUID) identifying the space from which spatial data are taken (e.g. animals, transforms).
-Data sets from different spaces SHOULD NOT be compared directly.
+Samples taken from two spatial experiments MAY have the same coordinates,
+but these may not actually be in the same physical location.
+Spatial datasets are routinely transformed from one "space" to another for comparison.
+It is important to track which space a dataset belongs to,
+to know whether it can be compared to another.
 
-### attr
+The space identifier is an arbitrary UTF-8 string identifying the space from which spatial data are taken (e.g. animals, transforms).
+Data sets from different spaces SHOULD NOT be spatially overlaid without transformation.
 
-Arbitrary metadata MAY be stored on schemas and fields under keys prefixed by `attr:`.
-Unstructured arbitrary metadata MAY be stored in serialized form,
-in which case the serialization used SHOULD be given like `attr:{MIME type}`, e.g. `{"attr:application/json": {\"a\": 1, \"b\": [2, 3]}}`
+It is RECOMMENDED that the identifier be an IRI or UUID to ensure uniqueness.
+
+Data from two [contexts](conventions.md#Contexts) MAY share the same space
+(e.g. after transforming one experiment's data to another's space).
+Data from one context MUST share a space.
 
 ## Schemas
 
-Schemas have metadata:
+Schemas have metadata, containing:
 
-- required keys which MUST exist
-- optional keys which MAY exist
+- _required_ keys which MUST exist
+- _optional_ keys which MAY exist
+- _attribute_ keys
+- _extension_ keys
 
-Metadata keys MUST be UTF-8 encoded strings.
-Metadata values SHOULD be UTF-8 encoded strings.
+Metadata keys and values MUST be strings, but MAY encode non-string data
+(e.g. numbers in decimal representation).
 
-Nested metadata MAY be encoded with `:`-separated names.
-For example, a JSON-like struct `{"a": {"b": "1", "c": "2"}}` MAY be encoded as `{"a:b": "1", "a:c": "2"}`.
+Schema metadata MAY contain arbitrary attributes;
+their keys MUST be prefixed by `attr:` as described in the [Attributes section](#attributes).
 
-Arbitrary schema metadata MAY be stored under keys with the `attr:` prefix.
-Schema metadata which is not part of the specification SHOULD NOT be stored outside of this namespace.
+Schema metadata MAY contain extension metadata;
+their keys MUST be prefixed by the unique name of the extension as described in [Extensions](./extensions.md#extension-metadata).
 
-Unstructured arbitrary schema metadata MAY be stored in a serialized form, e.g. `{"attr:json": "{\"a\": 1, \"b\": [2, 3, 4]}"}`.
+### Schema fields
 
-Schemas have fields:
+Schemas have fields (a.k.a. columns) described in this specification:
 
-- required fields which MUST exist
-- optional fields which MAY exist
-- derived fields with MAY exist, but MUST be calculable from other fields in the same schema
-  - if the derived field depends on any non-required fields to be calculated, it SHOULD list their names as a comma-separated, lexicographically-sorted list under the field metadata key `depends`, e.g. `{"depends": "field1,field2"}`.
+- _required_ fields which MUST exist
+- _optional_ fields which MAY exist
+- _derived_ fields which MAY exist, but MUST be calculable from other fields in the same context
+  - derived fields MAY be invalidated if the fields they depend on are updated
+- _extension_ fields whose name MUST be prefixed by the extension's unique name as described in [Extensions](./extensions.md#extension-fields)
+- _attribute_ fields which MAY exist and whose name MUST be prefixed with `attr:` as described in [Attributes](#attribute-fields)
+  - the `attr` field described in [Attributes](#attribute-fields) is also an _attribute_ field
 
-Arbitrary field metadata may be stored under keys with the `attr:` prefix.
-Field metadata which is not part of the specification SHOULD NOT be stored outside of this namespace.
+In Arrow, fields can have metadata.
+This feature is currently unused by neurarrow, but MAY be in future.
+Writers and extensions SHOULD NOT add or rely on field metadata.
+
+## Inheritance
+
+Certain schemas ("child") _inherit_ from another ("parent") schema.
+This means that the child schema:
+
+- MUST have all the parent's _required_ fields and metadata
+- MAY have all the parent's _optional_ and _derived_ fields and metadata
+
+Child schemas MAY inherit from more than one parent schema.
+
+The [Base](./schemas/base.md) and [Spatial](./schemas/spatial.md) schemas are provided as _abstract_ schemas.
+They SHOULD NOT be written as files themselves,
+but define a parent schema other (_concrete_) schemas MAY inherit from.
 
 ## Storage
 
-Individual tables should be stored as:
+Individual tables SHOULD be stored as:
 
-- [Feather](https://github.com/wesm/feather)
+- [Arrow IPC File format](https://arrow.apache.org/docs/format/Columnar.html#format-ipc)
+  - Also known as [Feather format](https://arrow.apache.org/docs/python/feather.html)
   - Best for inter-process communication or memory mapped I/O applications
-  - Extension `.feather`
+  - Extension `.arrow`
 - [Parquet](https://parquet.apache.org/)
-  - Best for longer-term, more space-efficient storage
+  - Best for longer-term, more space-efficient storage if writer parameters are set correctly
   - Extension `.parquet`
+- [Hive partitioned](https://duckdb.org/docs/stable/data/partitioning/hive_partitioning) parquet
+  - Parquet files split into chunks in directories based on a particular column's value
+  - Best for very large datasets, particularly in high-latency environments like cloud storage
+  - Paths like `.../fragment_id=123/*.skeleton.parquet`
+  - Note that modifying schema and field metadata on hive-partitioned data can mean updating a lot of files
 
-It is RECOMMENDED that if multiple tables need to be stored together, an uncompressed [tar](https://en.wikipedia.org/wiki/Tar_(computing)) archive should be used.
-Both formats above support compression internally which is better suited for the task and still allows efficient access, where a compressed archive (`.zip`, `.tar.gz`, `.7z`) does not.
+The extension SHOULD be prefixed with the name of the file schema, like `brain.skeletons.parquet` or `cns.connections.feather`.
 
-The extension SHOULD be prefixed with the name of the file schema, like `brain.skeletons.parquet` or `cns.connectors.feather`.
+> **WARNING**
+>
+> Parquet does not directly support `uint64` data (used for IDs in neurarrow).
+> Large `uint64` values are usually mapped to the negative range of parquet's `int64` data type,
+> and then parsed back to `uint64` when read back into arrow.
