@@ -94,8 +94,4 @@ the fragment to which they belong MAY not be if the data evolves.
 - data type: uint64
 - nullable: yes
 
-The ID of the skeleton to which the target sample belongs.
-MUST be the fragment ID associated with the sample ID in the skeleton table of this context.
-
-Note that while sample IDs SHOULD be stable,
-the fragment to which they belong MAY not be if the data evolves.
+As for `src_fragment_id`, in reference to the `tgt_sample_id`.

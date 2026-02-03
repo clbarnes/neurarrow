@@ -124,7 +124,7 @@ Writers and extensions SHOULD NOT add or rely on field metadata.
 
 ## Inheritance
 
-Certain schemas ("child") _inherit_ from another ("parent") schema.
+Certain ("child") schemas _inherit_ from another ("parent") schema.
 This means that the child schema:
 
 - MUST have all of the parents' _required_ fields and metadata

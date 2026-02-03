@@ -63,6 +63,8 @@ and MAY be invalidated if the source fields are updated.
 
 - data type: `list[uint64]`
 - nullable: yes
+  - where children are not calculated
+  - nodes known to be leaves (no children) SHOULD use an empty list instead of null
 
 The IDs of samples which have this sample as a parent.
 
@@ -70,6 +72,8 @@ The IDs of samples which have this sample as a parent.
 
 - data type: `uint32`
 - nullable: yes
+  - where children are not calculated
+  - notes known to be leaves (no children) SHOULD use 0 instead of null
 
 How many child nodes a particular sample has.
 
@@ -77,5 +81,6 @@ How many child nodes a particular sample has.
 
 - data type: `uint32`
 - nullable: yes
+  - where strahler index is not calculated
 
 The [Strahler number](https://en.wikipedia.org/wiki/Strahler_number) of this sample.

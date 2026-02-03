@@ -27,7 +27,7 @@ Extension authors SHOULD document all required and optional metadata keys and th
 
 Extensions MAY add new fields to any schema.
 These MUST have names prefixed by the extension name and a colon
-(`com.example.my_extension.my_field`).
+(`com.example.my_extension:my_field`).
 
 Extension authors SHOULD document all required, optional, and derived fields.
 
@@ -84,7 +84,7 @@ If you publish a neurarrow extension, please list it here.
 
 | Name | Description | Status | URL |
 | ---- | ----------- | ------ | --- |
-| net.clbarnes.swc | Interoperability with the SWC skeleton format | Experimental | <https://github.com/clbarnes/neurarrow-ext/blob/main/extensions/swc.md> |
+| `net.clbarnes.swc` | Interoperability with the SWC skeleton format | Experimental | <https://github.com/clbarnes/neurarrow-ext/blob/main/extensions/swc.md> |
 
 ## Wishlist
 
