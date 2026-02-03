@@ -1,26 +1,22 @@
 # Introduction
 
-Specifications for storing data using the [Apache Arrow](https://arrow.apache.org/) data model,
+Specifications for storing and transmitting neuronal morphology and connectivity data
+using the [Apache Arrow](https://arrow.apache.org/) data model,
 and models compatible with it (e.g. [Apache Parquet](https://parquet.apache.org/)).
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+## About Apache Arrow
 
-## Versioning
+From [arrow.apache.org](https://arrow.apache.org/):
 
-This specification utilises [semantic versioning](https://semver.org/).
+> Apache Arrow defines a language-independent columnar memory format for flat and nested data,
+> organized for efficient analytic operations on modern hardware like CPUs and GPUs.
+> The Arrow memory format also supports zero-copy reads for lightning-fast data access without serialization overhead.
 
-Before version `1.0.0`, all minor changes may be break compatibility.
-Otherwise,
+Using Apache Arrow gives neurarrow implementors access to a large ecosystem of existing software libraries across languages,
+as well as the ability to exchange that data between language runtimes and processes with minimal serialisation cost.
 
-- Patch versions are used for non-substantive or bug-fix changes to the text of the specification.
-- Minor versions are used for additions which do not break backward compatibility, i.e.
-  - A v1.2 parser SHOULD be able to read all v1.1 files
-  - A v1.1 parser MAY be able to partially read v1.2 files
-- Major versions are used for changes which break compatibility, i.e.
-  - A v1.x parser MAY not be able to read a v2.y file
-  - A v2.x parser MAY not be able to read a v1.y file
-
-[Extensions](./extensions.md) MAY use other versioning schemes.
+The use of standard binary formats such as parquet also allows the data to be read now and in the future
+without neurarrow-specific implementations.
 
 ## Prior art
 
@@ -35,3 +31,7 @@ These file formats describe tabular neuroscience data:
 
 - [SWC](http://www.neuronland.org/NLMorphologyConverter/MorphologyFormats/SWC/Spec.html)
   (and [SWCplus](https://neuroinformatics.nl/swcPlus/))
+
+These specifications build on Apache Arrow with domain-specific schemas:
+
+- [geoarrow](https://geoarrow.org/) and [geoparquet](https://github.com/opengeospatial/geoparquet/)

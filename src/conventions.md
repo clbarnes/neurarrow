@@ -1,12 +1,35 @@
 # Conventions
 
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.ietf.org/rfc/rfc2119.txt).
+
+## Versioning
+
+This specification utilises [semantic versioning](https://semver.org/).
+
+Before version `1.0.0`, all minor changes may be break compatibility.
+Otherwise,
+
+- Patch versions are used for non-substantive or bug-fix changes to the text of the specification.
+- Minor versions are used for additions which do not break backward compatibility, i.e.
+  - A v1.2 parser SHOULD be able to read all v1.1 files
+  - A v1.1 parser MAY be able to partially read v1.2 files
+- Major versions are used for changes which break compatibility, i.e.
+  - A v1.x parser MAY not be able to read a v2.y file
+  - A v2.x parser MAY not be able to read a v1.y file
+
+[Extensions](./extensions.md) MAY use other versioning schemes.
+
+All version strings MUST conform to the [PEP-440 version specifier specification](https://packaging.python.org/en/latest/specifications/version-specifiers/).
+
+## Naming
+
 Unless there is a very good reason not to, fields and metadata keys SHOULD use `snake_case` names.
 
 ## Data types
 
 ### Primitives
 
-We use arrow's nomenclature for primitives.
+This specification uses arrow's nomenclature for primitives.
 Note that strings MUST be in UTF-8 encoding.
 
 Real values SHOULD be stored as a float64 field, or as a decimal string (e.g. `3.14`) in a metadata value.
@@ -104,8 +127,8 @@ Writers and extensions SHOULD NOT add or rely on field metadata.
 Certain schemas ("child") _inherit_ from another ("parent") schema.
 This means that the child schema:
 
-- MUST have all the parent's _required_ fields and metadata
-- MAY have all the parent's _optional_ and _derived_ fields and metadata
+- MUST have all of the parents' _required_ fields and metadata
+- MAY have all of the parents' _optional_ and _derived_ fields and metadata
 
 Child schemas MAY inherit from more than one parent schema.
 
@@ -122,7 +145,7 @@ Individual tables SHOULD be stored as:
   - Best for inter-process communication or memory mapped I/O applications
   - Extension `.arrow`
 - [Parquet](https://parquet.apache.org/)
-  - Best for longer-term, more space-efficient storage if writer parameters are set correctly
+  - Best for longer-term, potentially more space-efficient storage
   - Extension `.parquet`
 - [Hive partitioned](https://duckdb.org/docs/stable/data/partitioning/hive_partitioning) parquet
   - Parquet files split into chunks in directories based on a particular column's value
