@@ -3,7 +3,7 @@
 Specifications for neuroscience data using the [Apache Arrow](https://arrow.apache.org/) data model,
 and models compatible with it (e.g. [Apache Parquet](https://parquet.apache.org/)).
 
-Development occurs [on github](https://github.com/clbarnes/neurarrow),
+Development happens [on github](https://github.com/clbarnes/neurarrow),
 and the rendered specification is at <https://clbarnes.github.io/neurarrow/>.
 
 ## This repository

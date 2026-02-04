@@ -35,3 +35,8 @@ These file formats describe tabular neuroscience data:
 These specifications build on Apache Arrow with domain-specific schemas:
 
 - [geoarrow](https://geoarrow.org/) and [geoparquet](https://github.com/opengeospatial/geoparquet/)
+
+## Links
+
+Development happens [on github](https://github.com/clbarnes/neurarrow),
+and the rendered specification is at <https://clbarnes.github.io/neurarrow/>.
