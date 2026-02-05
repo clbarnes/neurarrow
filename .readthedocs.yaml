@@ -7,7 +7,7 @@ build:
   # from https://github.com/readthedocs/test-builds/blob/mdbook/.readthedocs.yaml
   commands:
     - cargo install mdbook
-    - mdbook build docs --dest-dir $READTHEDOCS_OUTPUT/html
+    - mdbook build --dest-dir $READTHEDOCS_OUTPUT/html
   # # from https://docs.readthedocs.com/platform/stable/intro/mdbook.html
   # # doesn't work
   # jobs:
