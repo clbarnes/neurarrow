@@ -52,7 +52,7 @@ def bump_version(version: str, level: Literal["patch", "minor", "major"]):
 
 
 def commit_changes(execute=False):
-    cmd = ["git", "commit", "-am", "Bump version"]
+    cmd = ["git", "commit", "-am", "Bump version in changelog"]
     if execute:
         sp.run(cmd, check=True)
     else:
