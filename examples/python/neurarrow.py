@@ -360,7 +360,7 @@ def example_skeleton() -> Skeletons:
             "z": [0, 0, 0, 0],
             "radius": [1.0, None, None, 0.5],
         },
-        metadata={"version": "0.1", "unit": "nanometer"},
+        metadata={"version": "0.2", "unit": "nanometer"},
         strict=True,
     )
 

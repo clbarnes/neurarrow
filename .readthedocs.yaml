@@ -8,11 +8,3 @@ build:
   commands:
     - cargo install mdbook
     - mdbook build --dest-dir $READTHEDOCS_OUTPUT/html
-  # # from https://docs.readthedocs.com/platform/stable/intro/mdbook.html
-  # # doesn't work
-  # jobs:
-  #   install:
-  #     - cargo install mdbook
-  #   build:
-  #     html:
-  #       - mdbook build docs --dest-dir $READTHEDOCS_OUTPUT/html
