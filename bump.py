@@ -15,7 +15,7 @@ UNRELEASED_SECTION = "## Unreleased"
 
 def uncommitted_changes() -> str:
     res = sp.run(["git", "status", "--porcelain"], capture_output=True, text=True)
-    return res.stdout.strip()
+    return res.stdout.rstrip()
 
 
 def get_version():
@@ -49,6 +49,14 @@ def bump_version(version: str, level: Literal["patch", "minor", "major"]):
             raise ValueError(f"Invalid level: {level}")
 
     return ".".join(str(x) for x in parts)
+
+
+def commit_changes(execute=False):
+    cmd = ["git", "commit", "-am", "Bump version"]
+    if execute:
+        sp.run(cmd, check=True)
+    else:
+        eprint(f"Would run: $ {shlex.join(cmd)}")
 
 
 def tag_version(version: str, message: str, execute=False):
@@ -99,6 +107,7 @@ def main(raw_args: list[str] | None = None):
         action="store_true",
         help="actually create the tag (default: false)",
     )
+    args = parser.parse_args(raw_args)
 
     if changes := uncommitted_changes():
         eprint(
@@ -107,7 +116,6 @@ def main(raw_args: list[str] | None = None):
         eprint(changes)
         sys.exit(1)
 
-    args = parser.parse_args(raw_args)
     latest_version = get_version()
     new_version = bump_version(latest_version, args.level)
 
@@ -115,6 +123,7 @@ def main(raw_args: list[str] | None = None):
         eprint("Dry run: use --execute to enact changes")
 
     update_changelog(new_version, args.message, execute=args.execute)
+    commit_changes(execute=args.execute)
     tag_version(new_version, args.message, execute=args.execute)
 
 
