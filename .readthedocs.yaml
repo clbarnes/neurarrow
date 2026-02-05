@@ -1,13 +1,18 @@
-# adapted from https://docs.readthedocs.com/platform/stable/intro/mdbook.html
 version: 2
 
 build:
   os: ubuntu-lts-latest
   tools:
     rust: latest
-  jobs:
-    install:
-      - cargo install mdbook
-    build:
-      html:
-        - mdbook build docs --dest-dir $READTHEDOCS_OUTPUT/html
+  # from https://github.com/readthedocs/test-builds/blob/mdbook/.readthedocs.yaml
+  commands:
+    - cargo install mdbook
+    - mdbook build docs --dest-dir $READTHEDOCS_OUTPUT/html
+  # # from https://docs.readthedocs.com/platform/stable/intro/mdbook.html
+  # # doesn't work
+  # jobs:
+  #   install:
+  #     - cargo install mdbook
+  #   build:
+  #     html:
+  #       - mdbook build docs --dest-dir $READTHEDOCS_OUTPUT/html
