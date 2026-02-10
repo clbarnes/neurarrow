@@ -46,7 +46,7 @@ Extension authors SHOULD document all required, optional, and derived fields.
 
 > This section is not normative.
 
-Rather than extending an existing schema, new schemas MAY be created by which [inherit](./conventions.md#inheritance) from another.
+Rather than extending an existing schema, new schemas MAY be created which [inherit](./conventions.md#inheritance) from another.
 This is NOT RECOMMENDED, unless a new type of data is being represented.
 Data from extension A and extension B can both exist in the same table if they extend the same schema,
 but child schema X and child schema Y can only be composed by creating a third child schema Z which inherits from both.
