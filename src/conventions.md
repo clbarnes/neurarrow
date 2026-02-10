@@ -30,14 +30,14 @@ Unless there is a very good reason not to, fields and metadata keys SHOULD use `
 ### Primitives
 
 This specification uses arrow's nomenclature for primitives.
-Note that strings MUST be in UTF-8 encoding.
+Strings MUST be in UTF-8 encoding.
 
 Real values SHOULD be stored as a float64 field, or as a decimal string (e.g. `3.14`) in a metadata value.
-Integer IDs SHOULD be stored as uint64 field, or as a decimal string (e.g. `123`) in a custom metadata value.
+Integer IDs and counts SHOULD be stored as uint64 field, or as a decimal string (e.g. `123`) in a custom metadata value.
 
 ## Attributes
 
-Here, attributes are defined as arbitrary unstructured data and metadata.
+In neurarrow, attributes are defined as arbitrary unstructured data and metadata.
 
 Consider defining an [extension](./extensions.md) to make your additional data discoverable and re-usable.
 
