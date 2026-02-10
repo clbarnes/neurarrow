@@ -83,6 +83,8 @@ Ideally, extension documentation should be based on a public version-controlled 
 and listed below.
 Raise an issue, submit a PR, or contact the neurarrow developers to get your extension listed.
 
+[gh:clbarnes/neurarrow-ext](https://github.com/clbarnes/neurarrow-ext/) has some examples of extensions, as well as a template for defining your own.
+
 ## Known extensions
 
 If you publish a neurarrow extension, please list it here.
@@ -90,6 +92,7 @@ If you publish a neurarrow extension, please list it here.
 | Name | Description | Status | URL |
 | ---- | ----------- | ------ | --- |
 | `net.clbarnes.swc` | Interoperability with the SWC skeleton format | Experimental | <https://github.com/clbarnes/neurarrow-ext/blob/main/extensions/swc.md> |
+| `net.clbarnes.connector` | Point annotations associated with connections | Experimental | <https://github.com/clbarnes/neurarrow-ext/blob/main/extensions/connector.md> |
 
 ## Wishlist
 
