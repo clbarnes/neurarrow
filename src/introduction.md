@@ -39,4 +39,4 @@ These specifications build on Apache Arrow with domain-specific schemas:
 ## Links
 
 Development happens [on github](https://github.com/clbarnes/neurarrow),
-and the rendered specification is at <https://clbarnes.github.io/neurarrow/>.
+and the rendered specification is at <https://neurarrow.readthedocs.io>.
