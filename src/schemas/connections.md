@@ -2,6 +2,12 @@
 
 Connections are relationships between point cloud samples other than morphological continuity.
 
+## Parent schemas
+
+This schema inherits all fields and metadata from the following schemas:
+
+- [Base](./base.md)
+
 ## Schema metadata
 
 ### Required schema metadata
